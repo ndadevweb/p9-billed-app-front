@@ -15,6 +15,43 @@ export default class NewBill {
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
   }
+  getText(key) {
+    switch(key) {
+      case 'file_not_allowed':
+        const extensions = Object.values(
+          this.getMimeTypesAllowed()
+        ).join(',')
+
+        return `
+          Veuillez sélectionner un fichier d'image valide
+          (${extensions})
+        `
+      default:
+        return ''
+    }
+  }
+  getMimeTypesAllowed() {
+    return {
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png']
+    }
+  }
+  isValidFile(target) {
+    const file = target.files[0]
+    const mimeType = file.type
+    const extension = '.'+file.name.split('.').pop()
+    const fileTypesAllowed = this.getMimeTypesAllowed()
+
+    if(Object.keys(fileTypesAllowed).includes(mimeType) === false) {
+      return false
+    }
+
+    if(fileTypesAllowed[mimeType].includes(extension) === false) {
+      return false
+    }
+
+    return true
+  }
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
@@ -24,6 +61,12 @@ export default class NewBill {
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
+
+    if(this.isValidFile(e.target) === false) {
+      e.target.setCustomValidity(this.getText('file_not_allowed'))
+    } else {
+      e.target.setCustomValidity('')
+    }
 
     this.store
       .bills()
