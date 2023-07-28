@@ -64,6 +64,9 @@ export default class NewBill {
 
     if(this.isValidFile(e.target) === false) {
       e.target.setCustomValidity(this.getText('file_not_allowed'))
+      e.currentTarget.reportValidity()
+
+      return null
     } else {
       e.target.setCustomValidity('')
     }
