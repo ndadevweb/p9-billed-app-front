@@ -69,9 +69,9 @@ export default (bill) => {
           <label for="file" class="bold-label">Justificatif</label>
             <div class='input-field input-flex file-flex'>
             <span id="file-name-admin">
-              ${bill.fileName === 'null' ? ('Pas de fichier') : bill.fileName}
+              ${bill.fileName === null ? ('Pas de fichier') : bill.fileName}
             </span>
-            ${bill.fileName !== 'null'
+            ${bill.fileName !== null
               ? (`
                   <div class='icons-container'>
                     <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${bill.fileUrl}"> ${eyeWhite} </span>

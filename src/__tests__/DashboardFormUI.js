@@ -75,5 +75,14 @@ describe('Given I am connected as an Admin and I am on Dashboard Page', () => {
       expect(screen.getByText(bill.commentAdmin)).toBeTruthy()
     })
   })
+  describe('When there is no file', () => {
+    test(('Then, it should show "pas de fichier"'), () => {
+      const billWithoutFile = { ...bill, fileName: null }
+      const html = DashboardFormUI(billWithoutFile)
+      document.body.innerHTML = html
+
+      expect(screen.getByText("Pas de fichier")).toBeTruthy()
+    })
+  })
 })
 
